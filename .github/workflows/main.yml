@@ -1,4 +1,4 @@
-name: Checkmarx AST Scan
+name: Checkmarx Security Scan
 
 on:
   push:
@@ -45,20 +45,47 @@ jobs:
           project_name: ${{ github.repository }}
           # Branch Name
           branch: ${{ github.head_ref || github.ref }}
-          # GitHub API Token
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          # Additional scan parameters (modify as needed)
-          additional_params: --report-format sarif --output-path .
 
-      # Step 3: Upload SARIF file to GitHub Security Dashboard
-      - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v3
+  checkmarx-dast:
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Create Directory for Output
+        run: mkdir ${{ github.workspace }}/output_fold
+
+      - name: Change Directory Owner
+        run: sudo chown -R 1000:1000 ${{ github.workspace }}
+
+      - name: Checkmarx DAST Scan
+        uses: Checkmarx/dast-github-action@v2.3.0
+        env:
+          CX_APIKEY: ${{ secrets.CX_APIKEY }}
         with:
-          sarif_file: ./cx_result.sarif
+          # The type of scan to perform (web, api)
+          command: web
+          # The path to the ZAP configuration file
+          config: ./gin_juice(1).yaml
+          # The base URL for the Checkmarx One Servers
+          base_url: https://ind.ast.checkmarx.net
+          # The environment ID previously created in the Frontend
+          environment_id: bd462e37-c712-440a-9e0c-7984b09d5252
+          output: ${{ github.workspace }}/output_fold #./output
 
-      # Step 4: Upload Logs as Artifacts
-      - name: Upload Logs
+      - name: Reclaim Output Directory
+        if: always()
+        run: sudo chown -R 1001:1001 ${{ github.workspace }}/output_fold
+
+      - name: Upload DAST Logs
         uses: actions/upload-artifact@v4
+        if: always()
         with:
-          name: checkmarx-ast-report
-          path: ./cx_result.sarif
+          name: dast-report
+          path: ${{ github.workspace }}/output_fold

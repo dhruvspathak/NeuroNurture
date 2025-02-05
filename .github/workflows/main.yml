@@ -34,9 +34,9 @@ jobs:
         uses: Checkmarx/ast-github-action@2.0.23
         with:
           # Provide the AST portal URL
-          base_uri: ${{ secrets.CX_URL }}
+          base_uri: https://ind.ast.checkmarx.net
           # Provide the Tenant for AST portal URL
-          cx_tenant: ${{ secrets.CX_TENANT }}
+          cx_tenant: sudha
           # Client ID for AST portal authentication
           cx_client_id: ${{ secrets.CX_CLIENT_ID }}
           # Secret key for AST portal authentication

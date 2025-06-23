@@ -44,7 +44,7 @@ jobs:
           project_name: ${{ github.repository }}
           # Branch Name
           branch: ${{ github.head_ref || github.ref }}
-          additional_params: --sast-incremental= true
+          additional_params: --sast-incremental
 
   checkmarx-dast:
     permissions:

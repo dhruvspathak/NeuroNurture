@@ -59,4 +59,4 @@ jobs:
           cx_tenant: ast_abdul_ansari
           cx_client_id: dhruv-lts
           cx_client_secret: a7JMTAwqqu56bHgS9JLmqWrw7jqdshf5
-          additional_params: '--sca-resolver ./ScaResolver'
+          additional_params: '--sca-resolver /github/workspace/ScaResolver'

@@ -68,7 +68,7 @@ jobs:
       - name: Run Checkmarx AST Scan
         run: |
           /home/linuxbrew/.linuxbrew/Cellar/ast-cli/*/bin/cx scan create \
-            -s . \
+            -s ../ \
             --agent GitHub \
             --project-name ${{ github.repository }} \
             --branch ${GITHUB_REF##*/} \
@@ -77,4 +77,6 @@ jobs:
             --client-id dhruv-lts \
             --client-secret a7JMTAwqqu56bHgS9JLmqWrw7jqdshf5 \
             --sca-resolver /home/runner/work/NeuroNurture/NeuroNurture/ScaResolver  # Correct path to ScaResolver
-            --scan-types "sca"
+            --report-format sbom
+            --report-sbom-format CycloneDxJson
+            --scan-types sca

@@ -35,28 +35,31 @@ jobs:
     needs: sca-scan
 
     steps:
-      - name: Checkout source code
-        uses: actions/checkout@v3
 
       - name: Download CxSCA Resolver artifact
         uses: actions/download-artifact@v4
         with:
           name: ScaResolver
 
+      - name: Verify ScaResolver location and permissions
+        run: |
+          ls -l /github/workspace  # List contents of /github/workspace
+          ls -l /github/workspace/ScaResolver  # Verify that ScaResolver is here
+          file /github/workspace/ScaResolver  # Verify it's a valid executable
+
       - name: Ensure permissions inside Docker container
         run: |
-          sudo chown $USER:$USER ./ScaResolver  # Ensure correct ownership
-          chmod 755 ./ScaResolver  # Ensure executable permissions
+          sudo chmod 755 /github/workspace/ScaResolver  # Ensure executable permissions inside Docker container
+          ls -l /github/workspace/ScaResolver  # Verify the file is executable inside Docker
 
-      - name: Verify ScaResolver file
-        run: |
-          ls -l ./ScaResolver  # Check the file location and permissions
-          
+      - name: Checkout source code
+        uses: actions/checkout@v3
+
       - name: Run Checkmarx AST Github Action
         uses: Checkmarx/ast-github-action@2.0.23
         with:
           base_uri: https://eu.ast.checkmarx.net
           cx_tenant: ast_abdul_ansari
-          cx_client_id: dhruv-lts
+          cx_client_id: dhruv-lts-1
           cx_client_secret: a7JMTAwqqu56bHgS9JLmqWrw7jqdshf5
-          additional_params: '--sca-resolver /github/workspace/ScaResolver'
+          additional_params: '--sca-resolver /github/workspace/ScaResolver' 

@@ -78,4 +78,10 @@ jobs:
             --client-secret 56FqEFUHcSYiVpphj3jUeXpNofqhCBFG \
             --scan-types sca \
             --sca-resolver /home/runner/work/NeuroNurture/NeuroNurture/ScaResolver \
-            --sca-resolver-params "--report-extension Xml,Json --report-type CycloneDx" \
+            --sca-resolver-params "--report-extension Xml,Json --report-type CycloneDx --report-path /home/runner/work/NeuroNurture/NeuroNurture/sbom_report"  # Store report in repo folder
+
+      - name: Upload SBOM Report as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: SBOM-Report
+          path: /home/runner/work/NeuroNurture/NeuroNurture/sbom_report  # Upload the generated SBOM report

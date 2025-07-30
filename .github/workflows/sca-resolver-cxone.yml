@@ -19,8 +19,9 @@ jobs:
         run: |
           curl -L -o ScaResolver-linux64.tar.gz https://sca-downloads.s3.amazonaws.com/cli/latest/ScaResolver-linux64.tar.gz
           tar -xzf ScaResolver-linux64.tar.gz
-          chmod +x ScaResolver
-          ./ScaResolver --help
+          chmod +x ./ScaResolver  # Ensure executable permissions are set on ScaResolver
+          ls -l ./ScaResolver  # Verify the permissions
+          ./ScaResolver --help  # Test the executable
 
       - name: Upload CxSCA Resolver as artifact
         uses: actions/upload-artifact@v4
@@ -42,11 +43,12 @@ jobs:
         with:
           name: ScaResolver
 
-      - name: Checkmarx AST Github Action
+      - name: Run Checkmarx AST Github Action
         uses: Checkmarx/ast-github-action@2.0.23
         with:
-          base_uri: https://eu.ast.checkmarx.net/
+          base_uri: https://eu.ast.checkmarx.net
           cx_tenant: ast_abdul_ansari
           cx_client_id: dhruv-lts
           cx_client_secret: a7JMTAwqqu56bHgS9JLmqWrw7jqdshf5
           additional_params: '--sca-resolver ./ScaResolver'
+        

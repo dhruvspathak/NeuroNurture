@@ -61,6 +61,6 @@ jobs:
         with:
           base_uri: https://eu.ast.checkmarx.net
           cx_tenant: ast_abdul_ansari
-          cx_client_id: dhruv-lts-1
+          cx_client_id: dhruv-lts
           cx_client_secret: a7JMTAwqqu56bHgS9JLmqWrw7jqdshf5
           additional_params: '--sca-resolver /home/runner/work/NeuroNurture/NeuroNurture/ScaResolver'  # Correct path to ScaResolver

@@ -72,11 +72,9 @@ jobs:
             --agent GitHub \
             --project-name ${{ github.repository }} \
             --branch ${GITHUB_REF##*/} \
-            --base-uri https://eu.ast.checkmarx.net/ \
-            --tenant ast_abdul_ansari \
-            --client-id dhruv-lts \
-            --client-secret a7JMTAwqqu56bHgS9JLmqWrw7jqdshf5 \
+            --base-uri https://ind.ast.checkmarx.net/ \
+            --tenant sudha \
+            --client-id cx-dhruv-client-id \
+            --client-secret 56FqEFUHcSYiVpphj3jUeXpNofqhCBFG \
             --scan-types sca \
             --sca-resolver /home/runner/work/NeuroNurture/NeuroNurture/ScaResolver \
-            --sca-resolver-params "report"
-    

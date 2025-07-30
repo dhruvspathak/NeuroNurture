@@ -24,7 +24,7 @@ jobs:
 
       # Upload the ScaResolver folder as an artifact to use in the next job
       - name: Upload CxSCA Resolver as artifact
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           name: ScaResolver
           path: ./ScaResolver
@@ -40,7 +40,7 @@ jobs:
 
       # Download the ScaResolver artifact from the previous job
       - name: Download CxSCA Resolver artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: ScaResolver
 

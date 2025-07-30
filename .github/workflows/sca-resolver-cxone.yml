@@ -41,16 +41,17 @@ jobs:
         with:
           name: ScaResolver
 
-      - name: Verify ScaResolver location and permissions
+      - name: Verify artifact location and permissions
         run: |
-          ls -l /github/workspace  # List contents of /github/workspace
-          ls -l /github/workspace/ScaResolver  # Verify that ScaResolver is here
-          file /github/workspace/ScaResolver  # Verify it's a valid executable
+          # Check the default location where artifacts are downloaded
+          ls -l /home/runner/work/NeuroNurture/NeuroNurture  # This is the typical path for artifact downloads
+          ls -l /home/runner/work/NeuroNurture/NeuroNurture/ScaResolver  # Verify the artifact is here
+          file /home/runner/work/NeuroNurture/NeuroNurture/ScaResolver  # Verify it's a valid executable
 
       - name: Ensure permissions inside Docker container
         run: |
-          sudo chmod 755 /github/workspace/ScaResolver  # Ensure executable permissions inside Docker container
-          ls -l /github/workspace/ScaResolver  # Verify the file is executable inside Docker
+          sudo chmod 755 /home/runner/work/NeuroNurture/NeuroNurture/ScaResolver  # Ensure executable permissions inside Docker container
+          ls -l /home/runner/work/NeuroNurture/NeuroNurture/ScaResolver  # Verify the file is executable inside Docker
 
       - name: Checkout source code
         uses: actions/checkout@v3
@@ -62,4 +63,4 @@ jobs:
           cx_tenant: ast_abdul_ansari
           cx_client_id: dhruv-lts-1
           cx_client_secret: a7JMTAwqqu56bHgS9JLmqWrw7jqdshf5
-          additional_params: '--sca-resolver /github/workspace/ScaResolver' 
+          additional_params: '--sca-resolver /home/runner/work/NeuroNurture/NeuroNurture/ScaResolver'  # Correct path to ScaResolver

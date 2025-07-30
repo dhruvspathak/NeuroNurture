@@ -43,13 +43,16 @@ jobs:
 
       - name: Verify artifact location and permissions
         run: |
-          # Check the default location where artifacts are downloaded
+          echo "Listing contents of the workspace directory to verify artifact download:"
           ls -l /home/runner/work/NeuroNurture/NeuroNurture  # This is the typical path for artifact downloads
+          echo "Listing contents of ScaResolver location:"
           ls -l /home/runner/work/NeuroNurture/NeuroNurture/ScaResolver  # Verify the artifact is here
+          echo "Checking if ScaResolver is an executable:"
           file /home/runner/work/NeuroNurture/NeuroNurture/ScaResolver  # Verify it's a valid executable
 
       - name: Ensure permissions inside Docker container
         run: |
+          echo "Setting proper permissions on ScaResolver inside Docker:"
           sudo chmod 755 /home/runner/work/NeuroNurture/NeuroNurture/ScaResolver  # Ensure executable permissions inside Docker container
           ls -l /home/runner/work/NeuroNurture/NeuroNurture/ScaResolver  # Verify the file is executable inside Docker
 

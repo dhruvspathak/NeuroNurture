@@ -79,4 +79,3 @@ jobs:
             --scan-types sca \
             --sca-resolver /home/runner/work/NeuroNurture/NeuroNurture/ScaResolver \
             --sca-resolver-params "--report-extension Xml,Json --report-type CycloneDx" \
-            --async

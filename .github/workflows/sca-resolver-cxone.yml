@@ -76,7 +76,7 @@ jobs:
             --tenant ast_abdul_ansari \
             --client-id dhruv-lts \
             --client-secret a7JMTAwqqu56bHgS9JLmqWrw7jqdshf5 \
-            --sca-resolver /home/runner/work/NeuroNurture/NeuroNurture/ScaResolver  # Correct path to ScaResolver
-            --report-format sbom
-            --report-sbom-format CycloneDxJson
+            --sca-resolver /home/runner/work/NeuroNurture/NeuroNurture/ScaResolver \ # Correct path to ScaResolver
+            --report-format sbom \
+            --report-sbom-format CycloneDxJson \
             --scan-types sca

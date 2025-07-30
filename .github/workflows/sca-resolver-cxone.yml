@@ -2,9 +2,11 @@ name: Checkmarx SCA Scan (Windows)
 
 on:
   push:
-    branches: [main]
+    branches:
+      [main]
   pull_request:
-    branches: [main]
+    branches:
+      [main]
 
 jobs:
   sca-scan:
@@ -30,7 +32,7 @@ jobs:
           path: ./ScaResolver
 
   ast-scan:
-    name: Run Checkmarx AST Scan
+    name: Run Checkmarx AST Scan using CLI
     runs-on: ubuntu-latest
     needs: sca-scan
 
@@ -56,14 +58,22 @@ jobs:
           sudo chmod 755 /home/runner/work/NeuroNurture/NeuroNurture/ScaResolver  # Ensure executable permissions inside Docker container
           ls -l /home/runner/work/NeuroNurture/NeuroNurture/ScaResolver  # Verify the file is executable inside Docker
 
-      - name: Checkout source code
-        uses: actions/checkout@v3
+      - name: Install Homebrew and Checkmarx AST CLI
+        run: |
+          # Install Homebrew
+          /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+          # Install Checkmarx AST CLI
+          /home/linuxbrew/.linuxbrew/bin/brew install checkmarx/ast-cli/ast-cli
 
-      - name: Run Checkmarx AST Github Action
-        uses: Checkmarx/ast-github-action@2.0.23
-        with:
-          base_uri: https://eu.ast.checkmarx.net
-          cx_tenant: ast_abdul_ansari
-          cx_client_id: dhruv-lts
-          cx_client_secret: a7JMTAwqqu56bHgS9JLmqWrw7jqdshf5
-          additional_params: '--sca-resolver /home/runner/work/NeuroNurture/NeuroNurture/ScaResolver'  # Correct path to ScaResolver
+      - name: Run Checkmarx AST Scan
+        run: |
+          /home/linuxbrew/.linuxbrew/Cellar/ast-cli/*/bin/cx scan create \
+            -s . \
+            --agent GitHub \
+            --project-name ${{ github.repository }} \
+            --branch ${GITHUB_REF##*/} \
+            --base-uri https://eu.ast.checkmarx.net/ \
+            --tenant ${{ secrets.CX_TENANT }} \
+            --client-id dhruv-lts \
+            --client-secret a7JMTAwqqu56bHgS9JLmqWrw7jqdshf5 \
+            --sca-resolver /home/runner/work/NeuroNurture/NeuroNurture/ScaResolver  # Pass correct path to ScaResolver

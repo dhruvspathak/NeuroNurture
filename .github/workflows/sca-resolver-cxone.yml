@@ -19,9 +19,9 @@ jobs:
         run: |
           curl -L -o ScaResolver-linux64.tar.gz https://sca-downloads.s3.amazonaws.com/cli/latest/ScaResolver-linux64.tar.gz
           tar -xzf ScaResolver-linux64.tar.gz
-          chmod +x ./ScaResolver  # Ensure executable permissions are set on ScaResolver
-          ls -l ./ScaResolver  # Verify the permissions
-          ./ScaResolver --help  # Test the executable
+          chmod 755 ./ScaResolver  # Ensure proper permissions
+          ls -l ./ScaResolver  # Verify permissions
+          ./ScaResolver --help  # Test executable
 
       - name: Upload CxSCA Resolver as artifact
         uses: actions/upload-artifact@v4
@@ -43,6 +43,11 @@ jobs:
         with:
           name: ScaResolver
 
+      - name: Ensure permissions inside Docker container
+        run: |
+          sudo chown $USER:$USER ./ScaResolver  # Ensure correct ownership
+          chmod 755 ./ScaResolver  # Ensure executable permissions
+
       - name: Run Checkmarx AST Github Action
         uses: Checkmarx/ast-github-action@2.0.23
         with:
@@ -51,4 +56,3 @@ jobs:
           cx_client_id: dhruv-lts
           cx_client_secret: a7JMTAwqqu56bHgS9JLmqWrw7jqdshf5
           additional_params: '--sca-resolver ./ScaResolver'
-        
